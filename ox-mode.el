@@ -362,4 +362,6 @@ This is derived from `ox-mode'.
 
 (provide 'ox-mode)
 
+;; (magit-push)
+
 ;;; ox-mode.el ends here
