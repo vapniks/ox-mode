@@ -97,20 +97,27 @@ Each list item should be a regexp matching a single identifier." :group 'ox)
 (defconst ox-font-lock-keywords-1 (c-lang-const c-matchers-1 ox)
   "Minimal highlighting for Ox mode.")
 
-(defconst ox-font-lock-keywords-2 (c-lang-const c-matchers-2 ox)
+(defconst ox-font-lock-keywords-2
+  (nconc
+   ;; basic highlighting of include statements and comments (borrowed from cc-mode)
+   (c-lang-const c-matchers-2 ox)
+   ;; highlighting of code blocks
+   '(("\\<\\(?:algebra\\|break\\|co\\(?:int\\(?:\\(?:commo\\|know\\)n\\)\\|nstraints\\)\\|dynamics\\|exit\\|model\\|nonlinear\\|pr\\(?:intdate\\|ogress\\)\\|s\\(?:amplemean\\|how\\|ystem\\)\\|test\\(?:genres\\|linres\\|res\\|summary\\)\\)\\>" . font-lock-keyword-face)))
   "Fast normal highlighting for Ox mode.")
 
 (defconst ox-font-lock-keywords-3
-  (list
-   ;; control statements
-   '("\\<\\(?:algebra\\|break\\|co\\(?:int\\(?:\\(?:commo\\|know\\)n\\)\\|nstraints\\)\\|dynamics\\|exit\\|model\\|nonlinear\\|pr\\(?:intdate\\|ogress\\)\\|s\\(?:amplemean\\|how\\|ystem\\)\\|test\\(?:genres\\|linres\\|res\\|summary\\)\\)\\>" . font-lock-keyword-face)
+  (nconc
+   ;; basic highlighting of include statements and comments (borrowed from cc-mode)   
+   (c-lang-const c-matchers-2 ox)
+   ;; highlighting of code blocks
+   '(("\\<\\(?:algebra\\|break\\|co\\(?:int\\(?:\\(?:commo\\|know\\)n\\)\\|nstraints\\)\\|dynamics\\|exit\\|model\\|nonlinear\\|pr\\(?:intdate\\|ogress\\)\\|s\\(?:amplemean\\|how\\|ystem\\)\\|test\\(?:genres\\|linres\\|res\\|summary\\)\\)\\>" . font-lock-keyword-face)
    ;; model functions
    '("\\<\\(?:AR\\(?:\\(?:FI\\)?MA\\)\\|Gmm\\(?:Level\\)?\\|a\\(?:dftest\\|pp\\(?:enddata\\|results\\)\\|rorder\\)\\|c\\(?:hdir\\|losedata\\|ommand\\)\\|d\\(?:atabase\\|raw[fxz]?\\)\\|estimate\\|f\\(?:ix\\(?:AR\\|MA\\|mean\\)\\|orecast\\)\\|load\\(?:algebra\\|batch\\|command\\|data\\|graph\\)\\|module\\|o\\(?:ption\\|utput\\)\\|p\\(?:ackage\\|rint\\(?:ln\\)?\\)\\|rank\\|s\\(?:ave\\(?:d\\(?:ata\\|rawwindow\\)\\|results\\)\\|et\\(?:d\\(?:raw\\(?:window\\)?\\|ummy\\)\\|t\\(?:est\\|ransform\\)\\)\\|tore\\)\\|test\\|usedata\\)\\>" . font-lock-function-name-face)
    ;; algebra functions
-   '("\\<\\(?:_sort\\(?:\\(?:all\\)?by\\)\\|a\\(?:bs\\|c\\(?:f\\|os\\)\\|\\(?:lmo\\|si\\|ta\\)n\\)\\|c\\(?:eil\\|os\\|um\\)\\|d\\(?:a\\(?:te\\|y\\(?:ofweek\\)?\\)\\|e\\(?:lete\\|ns\\(?:chi\\|[fnt]\\)\\)\\|i\\(?:ff\\|v\\)\\|log\\|ummy\\(?:dates\\)?\\)\\|e\\(?:wm\\(?:a\\|c0\\)\\|xp\\)\\|f\\(?:abs\\|loor\\|mod\\)\\|hours\\|i\\(?:n\\(?:dates\\|sample\\)\\|s\\(?:dayofmonth\\|easter\\)\\)\\|l\\(?:ag\\|og\\(?:10\\|gamma\\)?\\)\\|m\\(?:a\\(?:ke\\(?:\\(?:dat\\|tim\\)e\\)\\|x\\)\\|ean\\|in\\(?:utes\\)?\\|o\\(?:nth\\|ving\\(?:SD\\|avg\\)\\)\\)\\|p\\(?:acf\\|e\\(?:ak\\|riod\\(?:ogram\\)?\\)\\|robn\\)\\|quan\\(?:chi\\|[fnt]\\)\\|r\\(?:an\\(?:chi\\|seed\\|[fntu]\\)\\|ound\\)\\|s\\(?:e\\(?:ason\\|conds\\)\\|in\\|mooth_\\(?:[hns]p\\)\\|ort\\|qrt\\|tockv?\\)\\|t\\(?:a\\(?:il\\(?:chi\\|[fnt]\\)\\|n\\)\\|ime\\|r\\(?:end\\|ough\\)\\)\\|variance\\|year\\)\\>" . font-lock-function-name-face))
+   '("\\<\\(?:_sort\\(?:\\(?:all\\)?by\\)\\|a\\(?:bs\\|c\\(?:f\\|os\\)\\|\\(?:lmo\\|si\\|ta\\)n\\)\\|c\\(?:eil\\|os\\|um\\)\\|d\\(?:a\\(?:te\\|y\\(?:ofweek\\)?\\)\\|e\\(?:lete\\|ns\\(?:chi\\|[fnt]\\)\\)\\|i\\(?:ff\\|v\\)\\|log\\|ummy\\(?:dates\\)?\\)\\|e\\(?:wm\\(?:a\\|c0\\)\\|xp\\)\\|f\\(?:abs\\|loor\\|mod\\)\\|hours\\|i\\(?:n\\(?:dates\\|sample\\)\\|s\\(?:dayofmonth\\|easter\\)\\)\\|l\\(?:ag\\|og\\(?:10\\|gamma\\)?\\)\\|m\\(?:a\\(?:ke\\(?:\\(?:dat\\|tim\\)e\\)\\|x\\)\\|ean\\|in\\(?:utes\\)?\\|o\\(?:nth\\|ving\\(?:SD\\|avg\\)\\)\\)\\|p\\(?:acf\\|e\\(?:ak\\|riod\\(?:ogram\\)?\\)\\|robn\\)\\|quan\\(?:chi\\|[fnt]\\)\\|r\\(?:an\\(?:chi\\|seed\\|[fntu]\\)\\|ound\\)\\|s\\(?:e\\(?:ason\\|conds\\)\\|in\\|mooth_\\(?:[hns]p\\)\\|ort\\|qrt\\|tockv?\\)\\|t\\(?:a\\(?:il\\(?:chi\\|[fnt]\\)\\|n\\)\\|ime\\|r\\(?:end\\|ough\\)\\)\\|variance\\|year\\)\\>" . font-lock-function-name-face)))
    "Accurate normal highlighting for oxmetrics modes.")
 
-(defvar ox-font-lock-keywords ox-font-lock-keywords-3
+(defvar ox-font-lock-keywords '(ox-font-lock-keywords-1 ox-font-lock-keywords-1 ox-font-lock-keywords-2 ox-font-lock-keywords-3)
   "Default expressions to highlight in Ox mode.")
 
 (defvar ox-mode-syntax-table nil
@@ -275,7 +282,7 @@ This is derived from `ox-mode'.
 \\{ox-batch-mode-map}"
   :syntax-table nil
   :abbrev-table nil
-  (set (make-local-variable 'font-lock-defaults) '(ox-font-lock-keywords nil t)))
+  (set (make-local-variable 'font-lock-defaults) (list ox-font-lock-keywords nil t)))
 
 
 ;;
