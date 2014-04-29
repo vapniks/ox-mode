@@ -1,4 +1,6 @@
 ;;; ox-mode.el -- major modes for editing oxmetrics program, batch & algebra files
+
+;; Copyright 2006-2014 John Zedlewski
 ;; Author:   Ox-mode portions: John Zedlewski (2006)
 ;;          (based almost entirely on derived-mode-ex.el
 ;;           2002 Martin Stjernholm)
@@ -8,6 +10,7 @@
 ;; Last-Updated: 2014-04-29 03:00:00
 ;;           By: Joe Bloggs
 ;; Keywords:   c languages oop
+;; Package-Requires: 
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
