@@ -131,42 +131,38 @@ Each list item should be a regexp matching a single identifier." :group 'ox)
 (defun ox-run-noshell ()
   (interactive)
   (compile
-   (concat ox-binary-path " \"" (buffer-file-name) "\"")
-   )  
-  )
+   (concat ox-binary-path " \"" (buffer-file-name) "\"")))
 
 (defun ox-run-withshell ()
   (shell-command 
-   (concat ox-binary-path " " (buffer-file-name)) "*Ox output*" "*Ox errors*")  
-  )
+   (concat ox-binary-path " " (buffer-file-name)) "*Ox output*" "*Ox errors*")  )
 
 (defun ox-run ()
   "Executes the current buffer with oxl"
   (interactive)
   (if ox-run-through-shell
       (ox-run-withshell)
-    (ox-run-noshell)
-      )
-  )
+    (ox-run-noshell)))
 
 (defun ox-parse ()
   "Parses the current buffer, but doesn't run it, with oxl"
   (interactive)
   (compile
-   (concat ox-binary-path " -r- " (buffer-file-name))
-   )
-  )
+   (concat ox-binary-path " -r- " (buffer-file-name))))
 
 
 (defvar ox-mode-map ()
   "Keymap used in ox-mode buffers.")
 
 ;; Set up mode-specific key bindings
-(if ox-mode-map nil
+(unless ox-mode-map 
   (setq ox-mode-map (c-make-inherited-keymap))
-  (define-key ox-mode-map "\C-co" 'ox-run)
-  (define-key ox-mode-map "\C-cp" 'ox-parse)
-
+  (define-key ox-mode-map (kbd "C-c o") 'ox-run)
+  (define-key ox-mode-map (kbd "C-c p") 'ox-parse)
+  (define-key ox-mode-map (kbd "C-c u") 'uncomment-region)
+  (define-key ox-mode-map (kbd "C-c c") 'comment-region)
+  (define-key ox-batch-mode-map (kbd "C-c C-c") 'comment-region)
+  (define-key ox-batch-mode-map (kbd "C-c C-u") 'uncomment-region)
 ;; Debugging commands (optional keybindings)
 ;; (I'll straighten out these keybindings when we upgrade debugging
 ;; support next)
@@ -174,13 +170,11 @@ Each list item should be a regexp matching a single identifier." :group 'ox)
 ;  (define-key ox-mode-map "\C-M-down" 'ox-debug-step-over)
 ;  (define-key ox-mode-map "\C-M-up" 'ox-debug-step-out)
 ;  (define-key ox-mode-map "\C-M-end" 'ox-debug-quit)
-  (define-key ox-mode-map "\C-cg" 'ox-debug-go)
-  (define-key ox-mode-map "\C-cd" 'ox-debug)
-
+  (define-key ox-mode-map (kbd "C-c g") 'ox-debug-go)
+  (define-key ox-mode-map (kbd "C-c d") 'ox-debug)
 ;; Menu commands  
   (define-key ox-mode-map [menu-bar ox-menu oxrun]
-    '("Run buffer with ox" . ox-run))
-  )
+    '("Run buffer with ox" . ox-run)))
 
 
 ;; Use the c-mode menu, plus a few additions
@@ -193,8 +187,7 @@ Each list item should be a regexp matching a single identifier." :group 'ox)
 	   [ "Run with ox" ox-run t ]
 	   [ "Parse only with ox" ox-parse t ]
 	   ;; add ox-only menu items here
-	   )
-	 )))
+))))
 
 ;; provides a drop-down list of ox functions in the current buffer
 ;; you must use something close to the "standard ox" indentation system
@@ -203,8 +196,7 @@ Each list item should be a regexp matching a single identifier." :group 'ox)
 (defun ox-setup-imenu ()
   (setq imenu-generic-expression
 	'((nil "^[[:space:]]*\\(static\\)?[[:space:]]*\\([[:word:]:]+\\)[ ]*(.*)[ \n]*\n{"  2)
-	  ("Classes" "^[[:space:]]*class[[:space:]]*\\([[:word:]]+\\)[[:space:]]+" 1)
-	  ))
+	  ("Classes" "^[[:space:]]*class[[:space:]]*\\([[:word:]]+\\)[[:space:]]+" 1)))
   (imenu-add-to-menubar "OxFunctions"))
 
 ;;;###autoload
@@ -246,9 +238,7 @@ Key bindings:
   (c-common-init 'ox-mode)
   
   (easy-menu-add ox-menu)
-  (if ox-use-imenu
-      (ox-setup-imenu)
-    )
+  (if ox-use-imenu (ox-setup-imenu))
   (run-hooks 'c-mode-common-hook)
   (run-hooks 'ox-mode-hook)
   (c-update-modeline))
@@ -266,8 +256,12 @@ Key bindings:
 (defvar ox-batch-mode-map ()
   "Keymap used in ox-mode buffers.")
 
-(if ox-batch-mode-map nil
-  (setq ox-batch-mode-map (c-make-inherited-keymap)))
+(unless ox-batch-mode-map 
+  (setq ox-batch-mode-map (c-make-inherited-keymap))
+  (define-key ox-batch-mode-map (kbd "C-c c") 'comment-region)
+  (define-key ox-batch-mode-map (kbd "C-c u") 'uncomment-region)
+  (define-key ox-batch-mode-map (kbd "C-c C-c") 'comment-region)
+  (define-key ox-batch-mode-map (kbd "C-c C-u") 'uncomment-region))
 
 (easy-menu-define ox-batch-menu ox-batch-mode-map "Ox Batch Mode Commands"
   (cons "Ox"
@@ -306,27 +300,23 @@ This is derived from `ox-mode'.
       (setq fname (substring fname 7 nil)))
   (switch-to-buffer oxfile)
   (find-file fname)
-  (goto-line (string-to-int lineno))
-  )
+  (goto-line (string-to-int lineno)))
 
 
 (defun ox-debug-next ()
   "run next command"
   (interactive ())
-  (ox-debug-send-command "")
-  )
+  (ox-debug-send-command ""))
 
 (defun ox-debug-step-over ()
   "run the `#step over' command"
   (interactive ())
-  (ox-debug-send-command "#step over")
-  )
+  (ox-debug-send-command "#step over"))
 
 (defun ox-debug-step-out ()
   "run the `#step out' command"
   (interactive ())
-  (ox-debug-send-command "#step out")
-  )
+  (ox-debug-send-command "#step out"))
 
 (defun ox-debug-quit ()
   "run the `#quit' over command"
@@ -335,15 +325,13 @@ This is derived from `ox-mode'.
   (ox-debug-send-command "exit")
   (switch-to-buffer "Oxl debug")
   (delete-window)
-  (kill-buffer "Oxl debug")
-)
+  (kill-buffer "Oxl debug"))
 
 (defun ox-debug-go (lineno)
   "run through line n"
   (interactive "sline no (RET for end): ")
   (goto-line (string-to-int lineno))
-  (ox-debug-send-command (concat "#go " lineno))
-  )
+  (ox-debug-send-command (concat "#go " lineno)))
 
 (defun ox-debug ()
   "Debug an ox file interactively"
@@ -357,8 +345,7 @@ This is derived from `ox-mode'.
   (setq ox-cmd (concat "oxl -d " (buffer-file-name)))
   (shell "Oxl debug") 
   (send-invisible ox-cmd)
-  (switch-to-buffer-other-window oxfile)
-  )
+  (switch-to-buffer-other-window oxfile))
 
 
 
