@@ -1,10 +1,12 @@
-;;; ox-mode.el
+;;; ox-mode.el -- major modes for editing oxmetrics program, batch & algebra files
 ;; Author:   Ox-mode portions: John Zedlewski (2006)
 ;;          (based almost entirely on derived-mode-ex.el
 ;;           2002 Martin Stjernholm)
 ;; Maintainer: John Zedlewski, Joe Bloggs 
 ;; Created:    October 2002 (derived-mode), July 2006 (ox-mode)
-;; Version:    0.4.1 (29/04/2014)
+;; Version:    0.4.1
+;; Last-Updated: 2014-04-29 03:00:00
+;;           By: Joe Bloggs
 ;; Keywords:   c languages oop
 
 ;; This program is free software; you can redistribute it and/or modify
