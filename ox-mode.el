@@ -264,7 +264,10 @@ Key bindings:
   (if ox-use-imenu (ox-setup-imenu))
   (run-hooks 'c-mode-common-hook)
   (run-hooks 'ox-mode-hook)
-  (c-update-modeline))
+  (c-update-modeline)
+  (setq outline-regexp ox-outline-regexp
+        outline-level ox-outline-level
+        outline-heading-alist ox-outline-heading-alist))
 
 ;; parse error messages from ox interpreter
 (require 'compile)
@@ -298,7 +301,10 @@ This is derived from `ox-mode'.
 \\{ox-batch-mode-map}"
   :syntax-table nil
   :abbrev-table nil
-  (set (make-local-variable 'font-lock-defaults) (list ox-font-lock-keywords nil t)))
+  (set (make-local-variable 'font-lock-defaults) (list ox-font-lock-keywords nil t))
+  (setq outline-regexp ox-outline-regexp
+        outline-level ox-outline-level
+        outline-heading-alist ox-outline-heading-alist))
 
 
 ;;
