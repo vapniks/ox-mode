@@ -94,6 +94,22 @@
   "*List of extra types (aside from the type keywords) to recognize in Ox mode.
 Each list item should be a regexp matching a single identifier." :group 'ox)
 
+(defcustom ox-outline-level nil
+  "Value of `outline-level' (which see) to use for `ox-mode' and `ox-batch-mode'."
+  :type 'symbol
+  :group 'ox)
+
+(defcustom ox-outline-regexp nil
+  "Value of `outline-regexp' (which see) to use for `ox-mode' and `ox-batch-mode'."
+  :type 'regexp
+  :group 'ox)
+
+(defcustom ox-outline-heading-alist nil
+  "Value of `outline-heading-alist' (which see) to use for `ox-mode' and `ox-batch-mode'."
+  :type '(alist :key-type string :value-type (integer :tag "Level"))
+  :group 'ox)
+
+
 (defconst ox-font-lock-keywords-1 (c-lang-const c-matchers-1 ox)
   "Minimal highlighting for Ox mode.")
 
