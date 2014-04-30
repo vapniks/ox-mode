@@ -40,7 +40,8 @@
 ;; 29/04/2014 - Joe Bloggs
 ;;      * Added more accurate `ox-font-lock-keywords-3'.
 ;;      * Added ox-batch-mode (for .fl and .alg files)
-;; 
+;; 30/04/2014 - Joe Bloggs
+;;      * Added options for outline-minor-mode
 
 
 ;;; Code:
@@ -94,12 +95,12 @@
   "*List of extra types (aside from the type keywords) to recognize in Ox mode.
 Each list item should be a regexp matching a single identifier." :group 'ox)
 
-(defcustom ox-outline-level nil
+(defcustom ox-outline-level 'outline-level
   "Value of `outline-level' (which see) to use for `ox-mode' and `ox-batch-mode'."
   :type 'symbol
   :group 'ox)
 
-(defcustom ox-outline-regexp nil
+(defcustom ox-outline-regexp "//+"
   "Value of `outline-regexp' (which see) to use for `ox-mode' and `ox-batch-mode'."
   :type 'regexp
   :group 'ox)
@@ -109,6 +110,10 @@ Each list item should be a regexp matching a single identifier." :group 'ox)
   :type '(alist :key-type string :value-type (integer :tag "Level"))
   :group 'ox)
 
+(defcustom ox-outline-minor-mode t
+  "Whether or not to use `outline-minor-mode' by default in `ox-mode' and `ox-batch-mode' buffers."
+  :type 'boolean
+  :group 'ox)
 
 (defconst ox-font-lock-keywords-1 (c-lang-const c-matchers-1 ox)
   "Minimal highlighting for Ox mode.")
@@ -267,7 +272,8 @@ Key bindings:
   (c-update-modeline)
   (setq outline-regexp ox-outline-regexp
         outline-level ox-outline-level
-        outline-heading-alist ox-outline-heading-alist))
+        outline-heading-alist ox-outline-heading-alist)
+  (if ox-outline-minor-mode (outline-minor-mode t)))
 
 ;; parse error messages from ox interpreter
 (require 'compile)
@@ -304,8 +310,8 @@ This is derived from `ox-mode'.
   (set (make-local-variable 'font-lock-defaults) (list ox-font-lock-keywords nil t))
   (setq outline-regexp ox-outline-regexp
         outline-level ox-outline-level
-        outline-heading-alist ox-outline-heading-alist))
-
+        outline-heading-alist ox-outline-heading-alist)
+  (if ox-outline-minor-mode (outline-minor-mode t)))
 
 ;;
 ;; Debugging support
