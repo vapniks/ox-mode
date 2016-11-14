@@ -189,8 +189,6 @@ Each list item should be a regexp matching a single identifier." :group 'ox)
   (define-key ox-mode-map (kbd "C-c p") 'ox-parse)
   (define-key ox-mode-map (kbd "C-c u") 'uncomment-region)
   (define-key ox-mode-map (kbd "C-c c") 'comment-region)
-  (define-key ox-batch-mode-map (kbd "C-c C-c") 'comment-region)
-  (define-key ox-batch-mode-map (kbd "C-c C-u") 'uncomment-region)
 ;; Debugging commands (optional keybindings)
 ;; (I'll straighten out these keybindings when we upgrade debugging
 ;; support next)
